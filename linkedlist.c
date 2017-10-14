@@ -1,10 +1,15 @@
 #include <stdio.h>
+#include <stdlib.h>
 
 #include "linkedlist.h"
 
 //  Should take a pointer to a node struct and print out all of the data in the list
 void print_list(struct node *node) {
-  
+  while (node) {
+    printf("%d -> ", node->i);
+    node = node->next;
+  }
+  printf("NULL\n");
 }
 
 /*
@@ -14,7 +19,10 @@ void print_list(struct node *node) {
     Returns a pointer to the beginning of the list.
 */
 struct node *insert_front(struct node *list, int data) {
-  
+  struct node *new = (struct node *)malloc(sizeof(struct node));
+  new->i = data;
+  new->next = list;
+  return new;
 }
 
 /*
@@ -23,5 +31,11 @@ struct node *insert_front(struct node *list, int data) {
       (which should be NULL by then). 
 */
 struct node *free_list(struct node *list) {
-  
+  while (list) {
+    struct node *next = list->next;
+    free(list);
+    list = next;
+  }
+  //free does not set pointers to null
+  return NULL;
 }
